@@ -13,10 +13,10 @@ class Window extends Component {
    */
   render() {
     return (
-      <div
-        className="mirador-window"
-      >
-        {this.props.window.id}
+      <div className="mirador-window">
+        <h3>{this.props.manifest.manifestation.getLabel().map(label => label.value)[0]}</h3>
+        <img src={this.props.manifest.manifestation.getThumbnail().id} alt="" />
+        <p>{this.props.window.id}</p>
       </div>
     );
   }
@@ -31,10 +31,12 @@ Window.propTypes = {
  * @memberof Window
  * @private
  */
-const mapStateToProps = ({ windows }, props) => (
-  {
-    window: windows.find(window => props.id === window.id),
-  }
-);
+const mapStateToProps = ({ windows, manifests }, props) => {
+  const window = windows.find(win => props.id === win.id);
+  return {
+    window,
+    manifest: manifests[window.manifestId],
+  };
+};
 
 export default connect(mapStateToProps)(Window);
